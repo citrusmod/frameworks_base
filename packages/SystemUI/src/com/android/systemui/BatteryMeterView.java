@@ -289,7 +289,6 @@ public class BatteryMeterView extends LinearLayout implements
 
     private void updateShowPercent() {
         final boolean showing = mBatteryPercentView != null;
-<<<<<<< HEAD
         int percentageStyle = Settings.System.getIntForUser(getContext().getContentResolver(),
                 SHOW_BATTERY_PERCENT, 0, mUser);
         mShowPercent = percentageStyle;
@@ -334,7 +333,8 @@ public class BatteryMeterView extends LinearLayout implements
             mBatteryPercentView.setPaddingRelative(
                     getMeterStyle() == BatteryMeterDrawableBase.BATTERY_STYLE_TEXT ? 0 : startPadding,
                     0, 0, 0);
-=======
+           }
+
         final boolean systemSetting = 0 != Settings.System
                 .getIntForUser(getContext().getContentResolver(),
                 SHOW_BATTERY_PERCENT, 0, mUser);
@@ -354,7 +354,6 @@ public class BatteryMeterView extends LinearLayout implements
                 removeView(mBatteryPercentView);
                 mBatteryPercentView = null;
             }
->>>>>>> 7ef18bca4b5c8bfdbbc286548a7c20bf01f92a92
         }
     }
 
