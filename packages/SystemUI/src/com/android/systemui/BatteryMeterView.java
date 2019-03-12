@@ -55,6 +55,7 @@ import com.android.systemui.statusbar.policy.IconLogger;
 import com.android.systemui.tuner.TunerService;
 import com.android.systemui.tuner.TunerService.Tunable;
 import com.android.systemui.util.Utils.DisableStateTracker;
+import com.android.systemui.R;
 
 import java.text.NumberFormat;
 
@@ -74,6 +75,8 @@ public class BatteryMeterView extends LinearLayout implements
     private int mShowPercent;
     private boolean mCharging;
     private boolean mPowerSave;
+    private boolean mForceShowPercent;
+    private boolean mShowPercentAvailable;
 
     private int mDarkModeBackgroundColor;
     private int mDarkModeFillColor;
@@ -118,6 +121,9 @@ public class BatteryMeterView extends LinearLayout implements
         atts.recycle();
 
         mSettingObserver = new SettingObserver(new Handler(context.getMainLooper()));
+        mShowPercentAvailable = context.getResources().getBoolean(
+                com.android.internal.R.bool.config_battery_percentage_setting_available);
+
 
         addOnAttachStateChangeListener(
                 new DisableStateTracker(DISABLE_NONE, DISABLE2_SYSTEM_ICONS));
@@ -283,6 +289,7 @@ public class BatteryMeterView extends LinearLayout implements
 
     private void updateShowPercent() {
         final boolean showing = mBatteryPercentView != null;
+<<<<<<< HEAD
         int percentageStyle = Settings.System.getIntForUser(getContext().getContentResolver(),
                 SHOW_BATTERY_PERCENT, 0, mUser);
         mShowPercent = percentageStyle;
@@ -327,6 +334,27 @@ public class BatteryMeterView extends LinearLayout implements
             mBatteryPercentView.setPaddingRelative(
                     getMeterStyle() == BatteryMeterDrawableBase.BATTERY_STYLE_TEXT ? 0 : startPadding,
                     0, 0, 0);
+=======
+        final boolean systemSetting = 0 != Settings.System
+                .getIntForUser(getContext().getContentResolver(),
+                SHOW_BATTERY_PERCENT, 0, mUser);
+
+        if ((mShowPercentAvailable && systemSetting) || mForceShowPercent) {
+            if (!showing) {
+                mBatteryPercentView = loadPercentView();
+                if (mTextColor != 0) mBatteryPercentView.setTextColor(mTextColor);
+                updatePercentText();
+                addView(mBatteryPercentView,
+                        new ViewGroup.LayoutParams(
+                                LayoutParams.WRAP_CONTENT,
+                                LayoutParams.MATCH_PARENT));
+            }
+        } else {
+            if (showing) {
+                removeView(mBatteryPercentView);
+                mBatteryPercentView = null;
+            }
+>>>>>>> 7ef18bca4b5c8bfdbbc286548a7c20bf01f92a92
         }
     }
 
